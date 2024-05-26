@@ -6,9 +6,11 @@ function createWindow() {
 	const win = new BrowserWindow({
 		width: 768,
 		height: 560,
-		fullscreen: true,
+		// fullscreen: true,
 		webPreferences: {
-			preload: path.join(__dirname, 'preload.js')
+			preload: path.join(__dirname, 'preload.js'),
+			nodeIntegration: false,
+			contextIsolation: true
 		}
 	});
 
@@ -19,13 +21,14 @@ function createWindow() {
 		fs.writeFileSync(filePath, data.content);
 
 		return { success: true, filePath };
-	})
+	});
+	// win.loadFile('src/about.html');
 
-	win.loadFile('src/about.html');
+	win.loadFile(path.join(__dirname, 'src/index.html'));
 }
 
 app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') app.quit();
-})
+});
